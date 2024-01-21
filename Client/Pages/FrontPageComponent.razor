@@ -88,10 +88,7 @@
         var result = await ProductService.GetFeaturedProducts();
 
         if (result is null) return;
-
-        var listProducts = result.ToList();
-        Console.WriteLine(listProducts);
-        FeaturedProductList!.AddRange(listProducts);
+        FeaturedProductList!.AddRange(result);
     }
 
     private string GetNewLabel(DateTime dateUploaded)
