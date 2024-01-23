@@ -1,11 +1,10 @@
 ﻿using Client.Helpers;
-using SharedLibrary.Contracts;
 using SharedLibrary.Models;
 using SharedLibrary.Responses;
 
 namespace Client.Services;
 
-public class ProductService(HttpClient httpClient) : IProduct
+public class ProductService(HttpClient httpClient) : IProductService
 {
     private const string _baseUrl = "api/Product";
 

@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using SharedLibrary.Contracts;
+using Server.Application.Interfaces;
 using SharedLibrary.Models;
 using SharedLibrary.Responses;
 
@@ -7,9 +7,9 @@ namespace Server.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class ProductController(IProduct productService) : ControllerBase
+public class ProductController(IProductService service) : ControllerBase
 {
-    private readonly IProduct _productService = productService;
+    private readonly IProductService _service = service;
 
     [HttpGet]
     public async Task<ActionResult<List<Product>>> GetAllProducts([FromQuery]bool featured)
@@ -17,11 +17,11 @@ public class ProductController(IProduct productService) : ControllerBase
         List<Product>? products;
         if (featured)
         {
-            products = await _productService.GetFeaturedProducts(); 
+            products = await _service.GetFeaturedProducts(); 
         }
         else
         {
-            products = await _productService.GetAllProducts();
+            products = await _service.GetAllProducts();
         }
 
         return Ok(products);
@@ -35,7 +35,7 @@ public class ProductController(IProduct productService) : ControllerBase
             return BadRequest("Product is null");
         }
 
-        var response = await _productService.AddProduct(product);
+        var response = await _service.AddProduct(product);
         return Ok(response);
     }
 }

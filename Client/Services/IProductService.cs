@@ -1,9 +1,9 @@
 ﻿using SharedLibrary.Models;
 using SharedLibrary.Responses;
 
-namespace SharedLibrary.Contracts;
+namespace Client.Services;
 
-public interface IProduct
+public interface IProductService
 {
     Task<ServiceResponse> AddProduct(Product product);
     Task<List<Product>> GetAllProducts();
