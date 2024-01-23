@@ -39,7 +39,7 @@ public class CategoryService(IUnitOfWork unitOfWork) : ICategoryService
 
     private async Task<ServiceResponse> CheckName(string name)
     {
-        var category = await _unitOfWork.Category.Find(c => c.Name.ToLower()!.Equals(name.ToLower()));
+        var category = await _unitOfWork.Category.Find(c => c.Name!.ToLower()!.Equals(name.ToLower()));
         foreach (var item in category)
         {
             Console.WriteLine(item.Name);

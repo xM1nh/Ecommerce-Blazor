@@ -1,0 +1,41 @@
+﻿@page "/products"
+
+@implements IDisposable
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-2">
+            <CategoriesPage CategoryClickedEvent="CategoryClickedEvent" DefaultCategoryClickedEvent="DefaultCategoryClickedEvent"/>
+        </div>
+        <div class="col-lg-10">
+            <ProductListPage />
+        </div>
+    </div>
+</div>
+
+@code {
+    protected override async Task OnInitializedAsync()
+    {
+        await ProductService.GetAllProducts();
+        ProductService.Action += StateHasChanged;
+    }
+    private async void CategoryClickedEvent(int id)
+    {
+        if (id == 0)
+        {
+            return;
+        }
+
+        await ProductService.GetProductsByCategory(id);
+    }
+
+    private async void DefaultCategoryClickedEvent()
+    {
+        ProductService.ProductsByCategory = null!;
+        await ProductService.GetAllProducts();
+    }
+
+    public void Dispose()
+    {
+        ProductService.Action -= StateHasChanged;
+    }
+}

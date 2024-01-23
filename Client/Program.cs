@@ -1,5 +1,6 @@
 using Client;
 using Client.Services;
+using Client.Services.Interfaces;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Syncfusion.Blazor;
@@ -10,6 +11,8 @@ builder.RootComponents.Add<HeadOutlet>("head::after");
 
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<ICategorytService, CategoryService>();
+builder.Services.AddScoped<MessageDialogService>();
 builder.Services.AddSyncfusionBlazor();
 
 await builder.Build().RunAsync();

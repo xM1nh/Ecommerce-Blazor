@@ -64,7 +64,6 @@
 </style>
 
 @code {
-    List<Product> ProductList = new();
     List<Product> FeaturedProducts = new();
 
     public int PageSize { get; set; } = 8;
@@ -73,44 +72,42 @@
 
     protected override async Task OnInitializedAsync()
     {
-        await GetFeaturedProducts();
-    }
-
-    private async Task GetFeaturedProducts()
-    {
-        ProductList?.Clear();
-
-        var result = await ProductService.GetFeaturedProducts();
-
-        if (result is null) return;
-        ProductList!.AddRange(result);
-
+        await ProductService.GetFeaturedProducts();
+        ProductService.Action += StateHasChanged;
         LoadData();
     }
 
     private void LoadData()
     {
-        var getData = ProductList!.Skip(Skip).Take(Take).ToList();
+        var getData = SkipAndTake(Skip, Take);
         Skip += PageSize;
-        FeaturedProducts?.Clear();
-        FeaturedProducts!.AddRange(getData);
+        RefreshData(getData);
     }
 
     private void PreviousButton()
     {
         if (Skip == 8) return;
-        var getNextProducts = ProductList!.Skip(Skip - (PageSize * 2)).Take(Take);
+        var getNextProducts = SkipAndTake(Skip - (PageSize * 2), Take);
         Skip -= PageSize;
-        FeaturedProducts?.Clear();
-        FeaturedProducts!.AddRange(getNextProducts);
+        RefreshData(getNextProducts);
     }
 
     private void NextButton()
     {
-        if (Skip >= ProductList.Count) return;
-        var getNextProducts = ProductList!.Skip(Skip).Take(Take);
+        if (Skip >= ProductService.FeaturedProducts.Count) return;
+        var getNextProducts = SkipAndTake(Skip, Take);
         Skip += PageSize;
+        RefreshData(getNextProducts);
+    }
+
+    private void RefreshData(IEnumerable<Product> incommingProducts)
+    {
         FeaturedProducts?.Clear();
-        FeaturedProducts!.AddRange(getNextProducts);
+        FeaturedProducts = (List<Product>)incommingProducts;
+    }
+
+    private List<Product> SkipAndTake(int skip, int take)
+    {
+        return ProductService.FeaturedProducts.Skip(Skip).Take(Take).ToList();
     }
 }

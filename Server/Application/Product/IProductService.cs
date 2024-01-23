@@ -8,4 +8,5 @@ public interface IProductService
     Task<List<Product>> GetAllProducts();
     Task<List<Product>> GetFeaturedProducts();
     Task<ServiceResponse> AddProduct(Product product);
+
 }

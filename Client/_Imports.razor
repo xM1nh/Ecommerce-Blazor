@@ -11,7 +11,15 @@
 
 @using SharedLibrary.Models
 @using Syncfusion.Blazor.Navigations
+
 @using Client.Services
+@using Client.Services.Interfaces
+
+@using Client.Pages.Other
+@using Client.Pages.Product
+@using Client.Pages.Category
 
 @inject IJSRuntime js
 @inject IProductService ProductService
+@inject ICategorytService CategoryService
+@inject MessageDialogService messageDialogService
