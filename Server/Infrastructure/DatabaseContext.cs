@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Server.EFConfigs;
+using Server.Infrastructure.EFConfigs;
 using SharedLibrary.Models;
 
 namespace Server.Infrastructure;

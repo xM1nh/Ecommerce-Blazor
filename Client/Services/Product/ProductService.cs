@@ -13,6 +13,7 @@ public class ProductService(HttpClient httpClient) : IProductService
     public List<Product>? FeaturedProducts { get; set; }
     public List<Product>? ProductsByCategory { get; set; }
     public Action? Action { get; set; }
+    public bool IsFetching { get; set; }
 
     public async Task<ServiceResponse> AddProduct(Product product)
     {
@@ -33,7 +34,9 @@ public class ProductService(HttpClient httpClient) : IProductService
     {
         if (Products is null) 
         {
+            IsFetching = true;
             var response = await httpClient.GetAsync($"{_baseUrl}");
+            IsFetching = false;
             var (flag, _) = HttpResponseHelper.CheckResponse(response);
             if (!flag)
             {
@@ -52,7 +55,9 @@ public class ProductService(HttpClient httpClient) : IProductService
     {
         if (FeaturedProducts is null)
         {
+            IsFetching = true;
             var response = await httpClient.GetAsync($"{_baseUrl}?featured=true");
+            IsFetching = false;
             var (flag, _) = HttpResponseHelper.CheckResponse(response);
             if (!flag)
             {
@@ -71,6 +76,20 @@ public class ProductService(HttpClient httpClient) : IProductService
         await GetAllProducts();
         ProductsByCategory = Products!.Where(p => p.CategoryId == categoryId).ToList();
         Action?.Invoke();
+    }
+
+    public Product GetRandomProduct()
+    {
+        if (FeaturedProducts is null)
+        {
+            return null!;
+        }
+
+        Random Rand = new();
+        int min = FeaturedProducts.Min(p => p.Id);
+        int max = FeaturedProducts.Max(p => p.Id) + 1;
+        int result = Rand.Next(min, max);
+        return FeaturedProducts.FirstOrDefault(p => p.Id == result)!;
     }
 
     private async Task InvalidateCache()

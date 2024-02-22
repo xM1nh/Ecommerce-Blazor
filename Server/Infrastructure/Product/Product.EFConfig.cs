@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using SharedLibrary.Models;
 
-namespace Server.EFConfigs;
+namespace Server.Infrastructure.EFConfigs;
 
 public class ProductEFConfig : IEntityTypeConfiguration<Product>
 {

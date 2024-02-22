@@ -5,6 +5,7 @@ namespace Client.Services.Interfaces;
 
 public interface IProductService
 {
+    bool IsFetching { get; set; }
     List<Product> Products { get; set; }
     List<Product> FeaturedProducts { get; set; }
     List<Product> ProductsByCategory { get; set; }
@@ -14,4 +15,5 @@ public interface IProductService
     Task GetAllProducts();
     Task GetFeaturedProducts();
     Task GetProductsByCategory(int  categoryId);
+    Product GetRandomProduct();
 }
